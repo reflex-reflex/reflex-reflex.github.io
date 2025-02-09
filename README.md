@@ -28,7 +28,7 @@
 
         #resetContainer {
             margin-top: 20px;
-            display: block; /* Ensure it's always displayed after the game ends */
+            display: none; /* Initially hidden */
         }
 
         #resetButton { 
