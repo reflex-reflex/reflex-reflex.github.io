@@ -1,28 +1,106 @@
-# Mines Gambling Game
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mines Gambling Game</title>
+    <style>
+        body { font-family: Arial, sans-serif; text-align: center; }
+        .grid { display: grid; grid-template-columns: repeat(5, 60px); gap: 5px; justify-content: center; margin-top: 20px; }
+        .cell { width: 60px; height: 60px; background: #ccc; display: flex; align-items: center; justify-content: center; font-size: 24px; cursor: pointer; border: 2px solid #444; }
+        .cell.revealed { background: lightgreen; cursor: default; }
+        .cell.mine { background: red; }
+        .hidden { display: none; }
+        .end-screen { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.8); color: white; display: flex; flex-direction: column; align-items: center; justify-content: center; }
+    </style>
+</head>
+<body>
+    <h1>Mines Gambling Game</h1>
+    <p>Click tiles to reveal safe spots. Hit a mine and lose!</p>
+    <div class="grid" id="grid"></div>
+    <p id="status">Balance: $100</p>
+    <button onclick="restartGame()">Restart Game</button>
+    <div id="endScreen" class="end-screen hidden">
+        <h2 id="endMessage"></h2>
+        <button onclick="restartGame()">Play Again</button>
+    </div>
+    <script>
+        const gridSize = 5;
+        let balance = 100;
+        let mineIndex;
+        let revealedCells = 0;
 
-Welcome to the **Mines Gambling Game**! This is a simple browser-based game where you choose tiles on a grid and try to avoid mines. If you hit a mine, the game ends, and you lose your bet. If you avoid the mines and reveal all the safe tiles, you win a reward!
+        // Generate a mine in the grid
+        function generateMine() {
+            mineIndex = Math.floor(Math.random() * (gridSize * gridSize));
+        }
 
-## How to Play
+        // Create the grid of cells
+        function createGrid() {
+            const grid = document.getElementById("grid");
+            grid.innerHTML = ""; // Clear any previous grid
+            for (let i = 0; i < gridSize * gridSize; i++) {
+                const cell = document.createElement("div");
+                cell.classList.add("cell");
+                cell.dataset.index = i;
+                cell.addEventListener("click", () => revealCell(i));
+                grid.appendChild(cell);
+            }
+        }
 
-1. **Start the Game**: Click the **Start Game** button to begin.
-2. **Make Your Choice**: After the game starts, click on the tiles to reveal them.
-   - If you click on a tile with a mine, the game ends, and you lose.
-   - If you click on a safe tile, it will be revealed, and you can continue revealing more tiles.
-3. **Win Condition**: If you manage to reveal all the safe tiles without hitting a mine, you win the game and earn a reward!
+        // Reveal a cell when clicked
+        function revealCell(index) {
+            const cell = document.querySelector(`.cell[data-index='${index}']`);
+            if (!cell || cell.classList.contains("revealed")) return;
 
-## Features
+            if (index === mineIndex) {
+                cell.classList.add("mine");
+                cell.innerHTML = "💣";
+                balance = Math.floor(balance / 2); // Half the balance if hit a mine
+                document.getElementById("status").innerText = `You hit the mine! Balance: $${balance}`;
+                checkEndGame();
+            } else {
+                cell.classList.add("revealed");
+                cell.innerHTML = "💎"; // Safe spot
+                revealedCells++;
+                balance += 5; // Increase balance for safe picks
+                document.getElementById("status").innerText = `Balance: $${balance}`;
+                checkVictory();
+            }
+        }
 
-- **Grid Layout**: The game is played on a 5x5 grid.
-- **Random Mines**: Mines are randomly placed across the grid.
-- **Balance**: You start with a balance of $100, and each game costs $10 to play. Winning rewards you with $50.
+        // Check if the player won by revealing all safe cells
+        function checkVictory() {
+            if (revealedCells === gridSize * gridSize - 1) {
+                document.getElementById("endMessage").innerText = "Lucky Pick!";
+                document.getElementById("endScreen").classList.remove("hidden");
+            }
+        }
 
-## How to Set Up Locally
+        // Check if the game should end due to win/loss conditions
+        function checkEndGame() {
+            if (balance <= 0) {
+                document.getElementById("endMessage").innerText = "Game Over! You're out of money!";
+                document.getElementById("endScreen").classList.remove("hidden");
+            } else if (balance >= 1000) {
+                document.getElementById("endMessage").innerText = "99% of gamblers quit before winning!";
+                document.getElementById("endScreen").classList.remove("hidden");
+            }
+        }
 
-If you want to run the game on your own machine, follow these steps:
+        // Restart the game and reset all values
+        function restartGame() {
+            revealedCells = 0;
+            balance = 100;
+            generateMine(); // Generate new mine
+            createGrid(); // Recreate the grid
+            document.getElementById("status").innerText = `Balance: $${balance}`;
+            document.getElementById("endScreen").classList.add("hidden"); // Hide end screen
+        }
 
-### 1. Clone the Repository
-
-Clone this repository to your local machine using:
-
-```bash
-git clone https://github.com/<your-username>/mines-gambling-game.git
+        // Initialize the game
+        generateMine(); // Generate the mine at the start
+        createGrid(); // Create the grid of cells
+    </script>
+</body>
+</html>
