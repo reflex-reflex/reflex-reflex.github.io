@@ -10,8 +10,9 @@
         .cell { width: 60px; height: 60px; background: #ccc; display: flex; align-items: center; justify-content: center; font-size: 24px; cursor: pointer; border: 2px solid #444; }
         .cell.revealed { background: lightgreen; cursor: default; }
         .cell.mine { background: red; }
-        .end-screen { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.8); color: white; display: flex; flex-direction: column; align-items: center; justify-content: center; z-index: -1; }
+        .end-screen { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.8); color: white; display: flex; flex-direction: column; align-items: center; justify-content: center; z-index: 999; }
         .end-screen.hidden { display: none; }
+        #resetButton { margin-top: 20px; padding: 10px 20px; font-size: 16px; cursor: pointer; }
     </style>
 </head>
 <body>
@@ -21,6 +22,7 @@
     <p id="status">Balance: $100</p>
     <div id="endScreen" class="end-screen hidden">
         <h2 id="endMessage"></h2>
+        <button id="resetButton" class="hidden">Reset Game</button>
     </div>
     <script>
         const gridSize = 5;
@@ -55,19 +57,29 @@
             if (!cell || cell.classList.contains("revealed")) return;
 
             if (index === mineIndex) {
+                // Player hits a mine
                 cell.classList.add("mine");
                 cell.innerHTML = "💣";
                 balance = Math.floor(balance / 2); // Half the balance if hit a mine
                 document.getElementById("status").innerText = `You hit the mine! Balance: $${balance}`;
+                freezeBoard();
                 checkEndGame();
             } else {
+                // Safe spot
                 cell.classList.add("revealed");
-                cell.innerHTML = "💎"; // Safe spot
+                cell.innerHTML = "💎";
                 revealedCells++;
                 balance += 5; // Increase balance for safe picks
                 document.getElementById("status").innerText = `Balance: $${balance}`;
                 checkVictory();
             }
+        }
+
+        // Freeze the board (disable further clicks)
+        function freezeBoard() {
+            const cells = document.querySelectorAll(".cell");
+            cells.forEach(cell => cell.style.pointerEvents = "none");
+            document.getElementById("resetButton").classList.remove("hidden");
         }
 
         // Check if the player won by revealing all safe cells
@@ -91,6 +103,21 @@
                 gameEnded = true; // End the game
             }
         }
+
+        // Reset the game
+        function resetGame() {
+            balance = 100;
+            revealedCells = 0;
+            gameEnded = false;
+            generateMine(); // Generate the mine at the start
+            createGrid(); // Create the grid of cells
+            document.getElementById("status").innerText = `Balance: $${balance}`;
+            document.getElementById("endScreen").classList.add("hidden");
+            document.getElementById("resetButton").classList.add("hidden");
+        }
+
+        // Add reset game button functionality
+        document.getElementById("resetButton").addEventListener("click", resetGame);
 
         // Initialize the game
         generateMine(); // Generate the mine at the start
