@@ -7,13 +7,32 @@
     <style>
         body { font-family: Arial, sans-serif; text-align: center; position: relative; min-height: 100vh; }
         .grid { display: grid; grid-template-columns: repeat(5, 60px); gap: 5px; justify-content: center; margin-top: 20px; }
-        .cell { width: 60px; height: 60px; background: #ccc; display: flex; align-items: center; justify-content: center; font-size: 24px; cursor: pointer; border: 2px solid #444; }
-        .cell.revealed { background: lightgreen; cursor: default; }
-        .cell.mine { background: red; }
-        .end-screen { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.8); color: white; display: flex; flex-direction: column; align-items: center; justify-content: center; z-index: 1000; transition: opacity 0.5s ease-in-out; }
+        .cell { 
+            width: 60px; height: 60px; background: #ccc; 
+            display: flex; align-items: center; justify-content: center; 
+            font-size: 24px; cursor: pointer; border: 2px solid #444;
+            transition: transform 0.3s ease, background 0.3s ease; 
+        }
+        .cell:hover { background: #bbb; }
+        .cell.revealed { background: lightgreen; transform: rotateY(180deg); cursor: default; }
+        .cell.mine { background: red; transform: rotateY(180deg); }
+        
+        .end-screen { 
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0, 0, 0, 0.8); color: white; display: flex;
+            flex-direction: column; align-items: center; justify-content: center;
+            z-index: 1000; transition: opacity 0.5s ease-in-out; 
+        }
         .end-screen.hidden { display: none; opacity: 0; }
         .end-screen h2 { font-size: 32px; font-weight: bold; text-transform: uppercase; animation: fadeIn 1s ease; }
-        #resetButton { margin-top: 20px; padding: 10px 20px; font-size: 16px; cursor: pointer; display: none; }
+        
+        #resetButton { 
+            margin-top: 15px; padding: 12px 24px; font-size: 18px; 
+            cursor: pointer; background: #ffcc00; border: none; 
+            border-radius: 5px; font-weight: bold; transition: 0.3s ease; display: none;
+        }
+        #resetButton:hover { background: #ffaa00; }
+
         @keyframes fadeIn {
             0% { opacity: 0; transform: translateY(30px); }
             100% { opacity: 1; transform: translateY(0); }
@@ -25,9 +44,10 @@
     <p>Click tiles to reveal safe spots. Hit a mine and lose!</p>
     <div class="grid" id="grid"></div>
     <p id="status">Balance: $100</p>
-    <button id="resetButton">Reset Game</button>
+
     <div id="endScreen" class="end-screen hidden">
         <h2 id="endMessage"></h2>
+        <button id="resetButton">Reset Game</button>
     </div>
 
     <script>
@@ -59,6 +79,8 @@
             const cell = document.querySelector(`.cell[data-index='${index}']`);
             if (!cell || cell.classList.contains("revealed")) return;
 
+            cell.style.transform = "rotateY(180deg)"; // Flip animation
+
             if (index === mineIndex) {
                 cell.classList.add("mine");
                 cell.innerHTML = "💣";
@@ -79,7 +101,6 @@
         function freezeBoard() {
             document.querySelectorAll(".cell").forEach(cell => cell.style.pointerEvents = "none");
             document.getElementById("resetButton").style.display = "inline-block";
-            document.getElementById("resetButton").disabled = false;
         }
 
         function checkVictory() {
@@ -113,7 +134,6 @@
             document.getElementById("status").innerText = `Balance: $${balance}`;
             document.getElementById("endScreen").classList.add("hidden");
             document.getElementById("resetButton").style.display = "none";
-            document.getElementById("resetButton").disabled = true;
             document.querySelectorAll(".cell").forEach(cell => cell.style.pointerEvents = "auto");
         }
 
