@@ -27,6 +27,7 @@
         .end-screen h2 { font-size: 32px; font-weight: bold; text-transform: uppercase; animation: fadeIn 1s ease; }
 
         #resetContainer {
+            display: none;
             margin-top: 20px;
         }
 
@@ -49,7 +50,7 @@
     <div class="grid" id="grid"></div>
     <p id="status">Balance: $100</p>
 
-    <!-- Reset Button is now placed below the balance counter -->
+    <!-- Reset Button now appears only after hitting a mine -->
     <div id="resetContainer">
         <button id="resetButton">Reset Game</button>
     </div>
@@ -64,6 +65,7 @@
         let mineIndex;
         let revealedCells = 0;
         let gameEnded = false;
+        let hitMine = false; // Track if the player has hit a mine
 
         function generateMine() {
             mineIndex = Math.floor(Math.random() * (gridSize * gridSize));
@@ -94,6 +96,8 @@
                 cell.innerHTML = "💣";
                 balance = Math.floor(balance / 2);
                 document.getElementById("status").innerText = `You hit the mine! Balance: $${balance}`;
+                hitMine = true; // Player has hit a mine
+                showResetButton(); // Show the reset button
                 freezeBoard();
                 checkEndGame();
             } else {
@@ -114,7 +118,6 @@
             if (revealedCells === gridSize * gridSize - 1) {
                 document.getElementById("endMessage").innerText = "Lucky Pick! You won!";
                 document.getElementById("endScreen").classList.remove("hidden");
-                document.getElementById("resetContainer").style.display = "block"; // Ensure reset button stays
                 gameEnded = true;
                 freezeBoard();
             }
@@ -124,26 +127,31 @@
             if (balance <= 0) {
                 document.getElementById("endMessage").innerText = "Game Over! You're out of money!";
                 document.getElementById("endScreen").classList.remove("hidden");
-                document.getElementById("resetContainer").style.display = "block"; // Ensure reset button stays
                 gameEnded = true;
                 freezeBoard();
             } else if (balance >= 500) { // Win condition lowered from 1000 to 500
                 document.getElementById("endMessage").innerText = "99% of gamblers quit before winning!";
                 document.getElementById("endScreen").classList.remove("hidden");
-                document.getElementById("resetContainer").style.display = "block"; // Ensure reset button stays
                 gameEnded = true;
                 freezeBoard();
+            }
+        }
+
+        function showResetButton() {
+            if (hitMine) {
+                document.getElementById("resetContainer").style.display = "block"; // Show reset button only after hitting mine
             }
         }
 
         function resetGame() {
             revealedCells = 0;
             gameEnded = false;
+            hitMine = false; // Reset hitMine flag
             generateMine();
             createGrid();
             document.getElementById("status").innerText = `Balance: $${balance}`;
             document.getElementById("endScreen").classList.add("hidden");
-            document.getElementById("resetContainer").style.display = "none"; // Hide reset button again after reset
+            document.getElementById("resetContainer").style.display = "none"; // Hide reset button after resetting
             document.querySelectorAll(".cell").forEach(cell => cell.style.pointerEvents = "auto");
         }
 
