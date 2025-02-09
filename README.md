@@ -121,7 +121,9 @@
         }
 
         // Add reset game button functionality
-        document.getElementById("resetButton").addEventListener("click", resetGame);
+        document.getElementById("resetButton").addEventListener("click", () => {
+            resetGame();
+        });
 
         // Initialize the game
         generateMine(); // Generate the mine at the start
