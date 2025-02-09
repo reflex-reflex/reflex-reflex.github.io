@@ -78,8 +78,8 @@
         // Freeze the board (disable further clicks)
         function freezeBoard() {
             const cells = document.querySelectorAll(".cell");
-            cells.forEach(cell => cell.style.pointerEvents = "none");
-            document.getElementById("resetButton").classList.remove("hidden");
+            cells.forEach(cell => cell.style.pointerEvents = "none"); // Disable clicks
+            document.getElementById("resetButton").classList.remove("hidden"); // Show reset button
         }
 
         // Check if the player won by revealing all safe cells
@@ -117,7 +117,7 @@
 
             // Re-enable the grid cells for clicks
             const cells = document.querySelectorAll(".cell");
-            cells.forEach(cell => cell.style.pointerEvents = "auto");
+            cells.forEach(cell => cell.style.pointerEvents = "auto"); // Re-enable clicks
         }
 
         // Add reset game button functionality
