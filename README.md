@@ -28,7 +28,6 @@
 
         #resetContainer {
             margin-top: 20px;
-            display: none; /* Initially hidden */
         }
 
         #resetButton { 
@@ -50,6 +49,7 @@
     <div class="grid" id="grid"></div>
     <p id="status">Balance: $100</p>
 
+    <!-- Reset Button is now placed below the balance counter -->
     <div id="resetContainer">
         <button id="resetButton">Reset Game</button>
     </div>
@@ -114,7 +114,7 @@
             if (revealedCells === gridSize * gridSize - 1) {
                 document.getElementById("endMessage").innerText = "Lucky Pick! You won!";
                 document.getElementById("endScreen").classList.remove("hidden");
-                document.getElementById("resetContainer").style.display = "block"; // Show reset button below board
+                document.getElementById("resetContainer").style.display = "block"; // Ensure reset button stays
                 gameEnded = true;
                 freezeBoard();
             }
@@ -124,13 +124,13 @@
             if (balance <= 0) {
                 document.getElementById("endMessage").innerText = "Game Over! You're out of money!";
                 document.getElementById("endScreen").classList.remove("hidden");
-                document.getElementById("resetContainer").style.display = "block"; // Show reset button below board
+                document.getElementById("resetContainer").style.display = "block"; // Ensure reset button stays
                 gameEnded = true;
                 freezeBoard();
             } else if (balance >= 500) { // Win condition lowered from 1000 to 500
                 document.getElementById("endMessage").innerText = "99% of gamblers quit before winning!";
                 document.getElementById("endScreen").classList.remove("hidden");
-                document.getElementById("resetContainer").style.display = "block"; // Show reset button below board
+                document.getElementById("resetContainer").style.display = "block"; // Ensure reset button stays
                 gameEnded = true;
                 freezeBoard();
             }
@@ -143,7 +143,7 @@
             createGrid();
             document.getElementById("status").innerText = `Balance: $${balance}`;
             document.getElementById("endScreen").classList.add("hidden");
-            document.getElementById("resetContainer").style.display = "none"; // Hide reset button
+            document.getElementById("resetContainer").style.display = "none"; // Hide reset button again after reset
             document.querySelectorAll(".cell").forEach(cell => cell.style.pointerEvents = "auto");
         }
 
