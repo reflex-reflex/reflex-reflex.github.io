@@ -25,11 +25,16 @@
         }
         .end-screen.hidden { display: none; opacity: 0; }
         .end-screen h2 { font-size: 32px; font-weight: bold; text-transform: uppercase; animation: fadeIn 1s ease; }
-        
+
+        #resetContainer {
+            display: none;
+            margin-top: 20px;
+        }
+
         #resetButton { 
-            margin-top: 15px; padding: 12px 24px; font-size: 18px; 
+            padding: 12px 24px; font-size: 18px; 
             cursor: pointer; background: #ffcc00; border: none; 
-            border-radius: 5px; font-weight: bold; transition: 0.3s ease; display: none;
+            border-radius: 5px; font-weight: bold; transition: 0.3s ease;
         }
         #resetButton:hover { background: #ffaa00; }
 
@@ -45,9 +50,12 @@
     <div class="grid" id="grid"></div>
     <p id="status">Balance: $100</p>
 
+    <div id="resetContainer">
+        <button id="resetButton">Reset Game</button>
+    </div>
+
     <div id="endScreen" class="end-screen hidden">
         <h2 id="endMessage"></h2>
-        <button id="resetButton">Reset Game</button>
     </div>
 
     <script>
@@ -100,13 +108,13 @@
 
         function freezeBoard() {
             document.querySelectorAll(".cell").forEach(cell => cell.style.pointerEvents = "none");
-            document.getElementById("resetButton").style.display = "inline-block";
         }
 
         function checkVictory() {
             if (revealedCells === gridSize * gridSize - 1) {
                 document.getElementById("endMessage").innerText = "Lucky Pick! You won!";
                 document.getElementById("endScreen").classList.remove("hidden");
+                document.getElementById("resetContainer").style.display = "block"; // Show reset button below board
                 gameEnded = true;
                 freezeBoard();
             }
@@ -116,11 +124,13 @@
             if (balance <= 0) {
                 document.getElementById("endMessage").innerText = "Game Over! You're out of money!";
                 document.getElementById("endScreen").classList.remove("hidden");
+                document.getElementById("resetContainer").style.display = "block"; // Show reset button below board
                 gameEnded = true;
                 freezeBoard();
             } else if (balance >= 500) { // Win condition lowered from 1000 to 500
                 document.getElementById("endMessage").innerText = "99% of gamblers quit before winning!";
                 document.getElementById("endScreen").classList.remove("hidden");
+                document.getElementById("resetContainer").style.display = "block"; // Show reset button below board
                 gameEnded = true;
                 freezeBoard();
             }
@@ -133,7 +143,7 @@
             createGrid();
             document.getElementById("status").innerText = `Balance: $${balance}`;
             document.getElementById("endScreen").classList.add("hidden");
-            document.getElementById("resetButton").style.display = "none";
+            document.getElementById("resetContainer").style.display = "none"; // Hide reset button
             document.querySelectorAll(".cell").forEach(cell => cell.style.pointerEvents = "auto");
         }
 
