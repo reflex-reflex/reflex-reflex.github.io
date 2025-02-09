@@ -16,7 +16,7 @@
     </style>
 </head>
 <body>
-    <h1>Mines Gambling Game</h1>
+    <h1>Mustard Penguin</h1>
     <p>Click tiles to reveal safe spots. Hit a mine and lose!</p>
     <div class="grid" id="grid"></div>
     <p id="status">Balance: $100</p>
