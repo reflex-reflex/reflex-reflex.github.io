@@ -104,14 +104,13 @@
             }
         }
 
-        // Reset the game
+        // Reset the game without resetting the balance
         function resetGame() {
-            balance = 100;
             revealedCells = 0;
             gameEnded = false;
             generateMine(); // Generate the mine at the start
             createGrid(); // Create the grid of cells
-            document.getElementById("status").innerText = `Balance: $${balance}`;
+            document.getElementById("status").innerText = `Balance: $${balance}`; // Keep the current balance
             document.getElementById("endScreen").classList.add("hidden");
             document.getElementById("resetButton").classList.add("hidden");
 
