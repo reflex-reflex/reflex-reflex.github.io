@@ -27,6 +27,7 @@
         let balance = 100;
         let mineIndex;
         let revealedCells = 0;
+        let gameEnded = false;
 
         // Generate a mine in the grid
         function generateMine() {
@@ -48,6 +49,8 @@
 
         // Reveal a cell when clicked
         function revealCell(index) {
+            if (gameEnded) return; // Prevent further actions if the game has ended
+            
             const cell = document.querySelector(`.cell[data-index='${index}']`);
             if (!cell || cell.classList.contains("revealed")) return;
 
@@ -72,6 +75,7 @@
             if (revealedCells === gridSize * gridSize - 1) {
                 document.getElementById("endMessage").innerText = "Lucky Pick!";
                 document.getElementById("endScreen").classList.remove("hidden");
+                gameEnded = true; // End the game
             }
         }
 
@@ -80,9 +84,11 @@
             if (balance <= 0) {
                 document.getElementById("endMessage").innerText = "Game Over! You're out of money!";
                 document.getElementById("endScreen").classList.remove("hidden");
+                gameEnded = true; // End the game
             } else if (balance >= 1000) {
                 document.getElementById("endMessage").innerText = "99% of gamblers quit before winning!";
                 document.getElementById("endScreen").classList.remove("hidden");
+                gameEnded = true; // End the game
             }
         }
 
