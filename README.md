@@ -27,8 +27,8 @@
         .end-screen h2 { font-size: 32px; font-weight: bold; text-transform: uppercase; animation: fadeIn 1s ease; }
 
         #resetContainer {
-            display: none;
             margin-top: 20px;
+            display: block; /* Ensure it's always displayed after the game ends */
         }
 
         #resetButton { 
