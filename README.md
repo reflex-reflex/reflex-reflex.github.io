@@ -19,10 +19,8 @@
     <p>Click tiles to reveal safe spots. Hit a mine and lose!</p>
     <div class="grid" id="grid"></div>
     <p id="status">Balance: $100</p>
-    <button onclick="restartGame()">Restart Game</button>
     <div id="endScreen" class="end-screen hidden">
         <h2 id="endMessage"></h2>
-        <button onclick="restartGame()">Play Again</button>
     </div>
     <script>
         const gridSize = 5;
@@ -86,16 +84,6 @@
                 document.getElementById("endMessage").innerText = "99% of gamblers quit before winning!";
                 document.getElementById("endScreen").classList.remove("hidden");
             }
-        }
-
-        // Restart the game and reset all values
-        function restartGame() {
-            revealedCells = 0;
-            balance = 100;
-            generateMine(); // Generate new mine
-            createGrid(); // Recreate the grid
-            document.getElementById("status").innerText = `Balance: $${balance}`;
-            document.getElementById("endScreen").classList.add("hidden"); // Hide end screen
         }
 
         // Initialize the game
