@@ -97,7 +97,7 @@
                 document.getElementById("endScreen").classList.remove("hidden");
                 gameEnded = true;
                 freezeBoard();
-            } else if (balance >= 1000) {
+            } else if (balance >= 500) { // Win condition lowered from 1000 to 500
                 document.getElementById("endMessage").innerText = "99% of gamblers quit before winning!";
                 document.getElementById("endScreen").classList.remove("hidden");
                 gameEnded = true;
