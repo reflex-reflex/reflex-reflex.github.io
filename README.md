@@ -12,7 +12,7 @@
         .cell.mine { background: red; }
         .end-screen { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.8); color: white; display: flex; flex-direction: column; align-items: center; justify-content: center; z-index: 999; }
         .end-screen.hidden { display: none; }
-        #resetButton { position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); padding: 10px 20px; font-size: 16px; cursor: pointer; display: none; }
+        #resetButton { margin-top: 20px; padding: 10px 20px; font-size: 16px; cursor: pointer; display: none; }
     </style>
 </head>
 <body>
@@ -20,10 +20,10 @@
     <p>Click tiles to reveal safe spots. Hit a mine and lose!</p>
     <div class="grid" id="grid"></div>
     <p id="status">Balance: $100</p>
+    <button id="resetButton" disabled>Reset Game</button>
     <div id="endScreen" class="end-screen hidden">
         <h2 id="endMessage"></h2>
     </div>
-    <button id="resetButton" disabled>Reset Game</button>
 
     <script>
         const gridSize = 5;
