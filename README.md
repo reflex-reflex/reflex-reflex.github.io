@@ -10,8 +10,8 @@
         .cell { width: 60px; height: 60px; background: #ccc; display: flex; align-items: center; justify-content: center; font-size: 24px; cursor: pointer; border: 2px solid #444; }
         .cell.revealed { background: lightgreen; cursor: default; }
         .cell.mine { background: red; }
-        .hidden { display: none; }
-        .end-screen { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.8); color: white; display: flex; flex-direction: column; align-items: center; justify-content: center; }
+        .end-screen { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.8); color: white; display: flex; flex-direction: column; align-items: center; justify-content: center; z-index: -1; }
+        .end-screen.hidden { display: none; }
     </style>
 </head>
 <body>
