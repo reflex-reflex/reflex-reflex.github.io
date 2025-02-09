@@ -5,14 +5,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Mines Gambling Game</title>
     <style>
-        body { font-family: Arial, sans-serif; text-align: center; }
+        body { font-family: Arial, sans-serif; text-align: center; position: relative; min-height: 100vh; }
         .grid { display: grid; grid-template-columns: repeat(5, 60px); gap: 5px; justify-content: center; margin-top: 20px; }
         .cell { width: 60px; height: 60px; background: #ccc; display: flex; align-items: center; justify-content: center; font-size: 24px; cursor: pointer; border: 2px solid #444; }
         .cell.revealed { background: lightgreen; cursor: default; }
         .cell.mine { background: red; }
         .end-screen { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.8); color: white; display: flex; flex-direction: column; align-items: center; justify-content: center; z-index: 999; }
         .end-screen.hidden { display: none; }
-        #resetButton { margin-top: 20px; padding: 10px 20px; font-size: 16px; cursor: pointer; }
+        #resetButton { position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); padding: 10px 20px; font-size: 16px; cursor: pointer; display: none; }
     </style>
 </head>
 <body>
@@ -22,8 +22,9 @@
     <p id="status">Balance: $100</p>
     <div id="endScreen" class="end-screen hidden">
         <h2 id="endMessage"></h2>
-        <button id="resetButton" class="hidden">Reset Game</button>
     </div>
+    <button id="resetButton" disabled>Reset Game</button>
+
     <script>
         const gridSize = 5;
         let balance = 100;
@@ -79,7 +80,8 @@
         function freezeBoard() {
             const cells = document.querySelectorAll(".cell");
             cells.forEach(cell => cell.style.pointerEvents = "none"); // Disable clicks
-            document.getElementById("resetButton").classList.remove("hidden"); // Show reset button
+            document.getElementById("resetButton").style.display = "inline-block"; // Show reset button
+            document.getElementById("resetButton").disabled = false; // Enable reset button
         }
 
         // Check if the player won by revealing all safe cells
@@ -112,7 +114,8 @@
             createGrid(); // Create the grid of cells
             document.getElementById("status").innerText = `Balance: $${balance}`; // Keep the current balance
             document.getElementById("endScreen").classList.add("hidden");
-            document.getElementById("resetButton").classList.add("hidden");
+            document.getElementById("resetButton").style.display = "none"; // Hide reset button
+            document.getElementById("resetButton").disabled = true; // Disable reset button
 
             // Re-enable the grid cells for clicks
             const cells = document.querySelectorAll(".cell");
