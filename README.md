@@ -114,6 +114,10 @@
             document.getElementById("status").innerText = `Balance: $${balance}`;
             document.getElementById("endScreen").classList.add("hidden");
             document.getElementById("resetButton").classList.add("hidden");
+
+            // Re-enable the grid cells for clicks
+            const cells = document.querySelectorAll(".cell");
+            cells.forEach(cell => cell.style.pointerEvents = "auto");
         }
 
         // Add reset game button functionality
