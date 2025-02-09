@@ -10,9 +10,25 @@
         .cell { width: 60px; height: 60px; background: #ccc; display: flex; align-items: center; justify-content: center; font-size: 24px; cursor: pointer; border: 2px solid #444; }
         .cell.revealed { background: lightgreen; cursor: default; }
         .cell.mine { background: red; }
-        .end-screen { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.8); color: white; display: flex; flex-direction: column; align-items: center; justify-content: center; z-index: 999; }
-        .end-screen.hidden { display: none; }
-        #resetButton { margin-top: 20px; padding: 10px 20px; font-size: 16px; cursor: pointer; display: none; }
+        .end-screen { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.8); color: white; display: flex; flex-direction: column; align-items: center; justify-content: center; z-index: 1000; transition: opacity 0.5s ease-in-out; }
+        .end-screen.hidden { display: none; opacity: 0; }
+        .end-screen h2 { font-size: 32px; font-weight: bold; text-transform: uppercase; animation: fadeIn 1s ease; }
+        #resetButton { margin-top: 20px; padding: 10px 20px; font-size: 16px; cursor: pointer; display: inline-block; z-index: 2000; position: relative; }
+        @keyframes fadeIn {
+            0% { opacity: 0; transform: translateY(30px); }
+            100% { opacity: 1; transform: translateY(0); }
+        }
+        .celebration {
+            color: #ffdf00;
+            font-size: 36px;
+            font-weight: bold;
+            animation: celebration 1s ease-in-out infinite alternate;
+        }
+        @keyframes celebration {
+            0% { transform: rotate(0deg); }
+            50% { transform: rotate(15deg); }
+            100% { transform: rotate(0deg); }
+        }
     </style>
 </head>
 <body>
@@ -23,6 +39,7 @@
     <button id="resetButton" disabled>Reset Game</button>
     <div id="endScreen" class="end-screen hidden">
         <h2 id="endMessage"></h2>
+        <div class="celebration">🎉 Congratulations! 🎉</div>
     </div>
 
     <script>
@@ -66,11 +83,11 @@
                 freezeBoard();
                 checkEndGame();
             } else {
-                // Safe spot
+                // Safe spot (Diamond 💎 now gives $10 instead of $5)
                 cell.classList.add("revealed");
                 cell.innerHTML = "💎";
                 revealedCells++;
-                balance += 5; // Increase balance for safe picks
+                balance += 10; // Increase balance by 10
                 document.getElementById("status").innerText = `Balance: $${balance}`;
                 checkVictory();
             }
